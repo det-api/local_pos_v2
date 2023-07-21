@@ -19,6 +19,7 @@ import {
 } from "./fuelBalance.service";
 import { addDailyReport, getDailyReport } from "./dailyReport.service";
 import { fuelBalanceDocument } from "../model/fuelBalance.model";
+import { updateDevice } from "./device.service";
 
 const url = "http://localhost:7000/api/detail-sale";
 
@@ -302,6 +303,17 @@ export const detailSaleUpdateByDevice = async (topic: string, message) => {
     return;
   }
 
+  // console.log(lastData[0].salePrice, data[1]);
+
+  if (lastData[0].salePrice != data[1]) {
+    await updateDevice(
+      { fuel_type: lastData[0].fuelType },
+      { daily_price: data[1] }
+    );
+    // console.log("price updated");
+    mqttEmitter("detpos/local_server/price_change", lastData[0].fuelType);
+  }
+
   let updateBody: UpdateQuery<detailSaleDocument> = {
     nozzleNo: data[0],
     salePrice: data[1],
@@ -353,72 +365,72 @@ export const detailSaleUpdateByDevice = async (topic: string, message) => {
   }
 
   // cloud and balance calculation
-  // let checkDate = await getFuelBalance({
-  //   stationId: result.stationDetailId,
-  //   createAt: result.dailyReportDate,
-  // });
-  // let checkRpDate = await getDailyReport({
-  //   stationId: result.stationDetailId,
-  //   dateOfDay: result.dailyReportDate,
-  // });
-  // if (checkRpDate.length == 0) {
-  //   await addDailyReport({
-  //     stationId: result.stationDetailId,
-  //     dateOfDay: result.dailyReportDate,
-  //   });
-  // }
-  // // console.log(checkDate.length, checkRpDate.length);
-  // // create the data in fuel balance db data with today date is not exist in db
-  // if (checkDate.length == 0) {
-  //   let prevDate = previous(new Date(result.dailyReportDate));
+  let checkDate = await getFuelBalance({
+    stationId: result.stationDetailId,
+    createAt: result.dailyReportDate,
+  });
+  let checkRpDate = await getDailyReport({
+    stationId: result.stationDetailId,
+    dateOfDay: result.dailyReportDate,
+  });
+  if (checkRpDate.length == 0) {
+    await addDailyReport({
+      stationId: result.stationDetailId,
+      dateOfDay: result.dailyReportDate,
+    });
+  }
+  // console.log(checkDate.length, checkRpDate.length);
+  // create the data in fuel balance db data with today date is not exist in db
+  if (checkDate.length == 0) {
+    let prevDate = previous(new Date(result.dailyReportDate));
 
-  //   let prevResult = await getFuelBalance({
-  //     stationId: result.stationDetailId,
-  //     createAt: prevDate,
-  //   });
-  //   // console.log(result.stationDetailId, prevDate);
-  //   // console.log(prevResult);
-  //   await Promise.all(
-  //     prevResult.map(async (ea) => {
-  //       let obj: fuelBalanceDocument;
-  //       if (ea.balance == 0) {
-  //         obj = {
-  //           stationId: ea.stationId,
-  //           fuelType: ea.fuelType,
-  //           capacity: ea.capacity,
-  //           opening: ea.opening + ea.fuelIn,
-  //           tankNo: ea.tankNo,
-  //           createAt: result?.dailyReportDate,
-  //           nozzles: ea.nozzles,
-  //           balance: ea.opening + ea.fuelIn,
-  //         } as fuelBalanceDocument;
-  //       } else {
-  //         obj = {
-  //           stationId: ea.stationId,
-  //           fuelType: ea.fuelType,
-  //           capacity: ea.capacity,
-  //           opening: ea.opening + ea.fuelIn - ea.cash,
-  //           tankNo: ea.tankNo,
-  //           createAt: result?.dailyReportDate,
-  //           nozzles: ea.nozzles,
-  //           balance: ea.opening + ea.fuelIn - ea.cash,
-  //         } as fuelBalanceDocument;
-  //       }
+    let prevResult = await getFuelBalance({
+      stationId: result.stationDetailId,
+      createAt: prevDate,
+    });
+    // console.log(result.stationDetailId, prevDate);
+    // console.log(prevResult);
+    await Promise.all(
+      prevResult.map(async (ea) => {
+        let obj: fuelBalanceDocument;
+        if (ea.balance == 0) {
+          obj = {
+            stationId: ea.stationId,
+            fuelType: ea.fuelType,
+            capacity: ea.capacity,
+            opening: ea.opening + ea.fuelIn,
+            tankNo: ea.tankNo,
+            createAt: result?.dailyReportDate,
+            nozzles: ea.nozzles,
+            balance: ea.opening + ea.fuelIn,
+          } as fuelBalanceDocument;
+        } else {
+          obj = {
+            stationId: ea.stationId,
+            fuelType: ea.fuelType,
+            capacity: ea.capacity,
+            opening: ea.opening + ea.fuelIn - ea.cash,
+            tankNo: ea.tankNo,
+            createAt: result?.dailyReportDate,
+            nozzles: ea.nozzles,
+            balance: ea.opening + ea.fuelIn - ea.cash,
+          } as fuelBalanceDocument;
+        }
 
-  //       await addFuelBalance(obj);
-  //     })
-  //   );
-  // }
+        await addFuelBalance(obj);
+      })
+    );
+  }
 
-  // await calcFuelBalance(
-  //   {
-  //     stationId: result.stationDetailId,
-  //     fuelType: result.fuelType,
-  //     createAt: result.dailyReportDate,
-  //   },
-  //   { liter: result.saleLiter },
-  //   result.nozzleNo
-  // );
+  await calcFuelBalance(
+    {
+      stationId: result.stationDetailId,
+      fuelType: result.fuelType,
+      createAt: result.dailyReportDate,
+    },
+    { liter: result.saleLiter },
+    result.nozzleNo
+  );
 
   let finalData = await detailSaleModel.find({ asyncAlready: 1 });
 

@@ -8,9 +8,19 @@ export interface coustomerDocument extends mongoose.Document {
 }
 
 const coustomerSchema = new Schema({
-  cou_name: { type: String, required: true },
+  cou_name: { type: String, required: true, unique: true },
   cou_id: { type: String, unique: true },
-  cou_phone: { type: Number, unique: true },
+  cou_phone: [{ type: Number, unique: true }],
+
+  cou_address: { type: String, required: true },
+  com_register_no: { type: String, default: null },
+
+  contact_person_name: { type: String, required: true },
+
+  contact_person_phone: [{ type: Number, required: true }],
+
+  limitAmount: { type: Number, default: 0 },
+
   cou_debt: { type: Number, default: 0 },
 });
 
