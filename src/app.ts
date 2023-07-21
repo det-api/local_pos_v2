@@ -34,7 +34,7 @@ client.on("message", async (topic, message) => {
 
   if (data[2] == "active") {
     // console.log(data[3]);
-    blinkLed(Number(data[3]));
+    // blinkLed(Number(data[3]));
   }
 
   if (data[2] == "Final") {

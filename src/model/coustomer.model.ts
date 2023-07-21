@@ -13,6 +13,7 @@ const coustomerSchema = new Schema({
   cou_phone: [{ type: Number, unique: true }],
 
   cou_address: { type: String, required: true },
+
   com_register_no: { type: String, default: null },
 
   contact_person_name: { type: String, required: true },

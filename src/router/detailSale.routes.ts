@@ -7,6 +7,7 @@ import {
   getDetailSaleHandler,
   updateDetailSaleHandler,
 } from "../controller/detailSale.controller";
+import { managerValidator } from "../middleware/managerValidator";
 
 import { hasAnyPermit } from "../middleware/permitValidator";
 import { roleValidator } from "../middleware/roleValidator";
@@ -43,7 +44,12 @@ detailSaleRoute.get(
 //that for only device
 detailSaleRoute.post("/", validateToken, addDetailSaleHandler);
 detailSaleRoute.patch("/", validateToken, updateDetailSaleHandler);
-detailSaleRoute.patch("/error", validateToken, detailSaleUpdateErrorHandler);
+detailSaleRoute.patch(
+  "/error",
+  validateToken,
+  managerValidator,
+  detailSaleUpdateErrorHandler
+);
 
 detailSaleRoute.delete(
   "/",
