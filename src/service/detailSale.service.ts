@@ -161,37 +161,6 @@ export const updateDetailSale = async (
 
     console.log(data);
 
-    //$debt
-
-    // if (data.cashType == "Debt") {
-    //   let checkVocono = await getDebt({ vocono: data.vocono });
-    //   // if (checkVocono.length > 0)
-    //   //   throw new Error("this vocono is alreadly exist");
-    //   let coustomerConditon = await getCoustomerById(data.couObjId);
-
-    //   if (!coustomerConditon)
-    //     throw new Error("There is no coustomer with that name");
-
-    //   let debtBody = {
-    //     stationDetailId: data.stationDetailId,
-    //     vocono: data.vocono,
-    //     couObjId: data.couObjId,
-    //     deposit: data.totalPrice,
-    //     credit: 0,
-    //     liter: data.saleLiter,
-    //   };
-
-    //   coustomerConditon.cou_debt = coustomerConditon.cou_debt + data.totalPrice;
-    //   // console.log(coustomerConditon)
-
-    //   // console.log(coustomerBody);
-
-    //   await addDebt(debtBody);
-
-    //   await updateCoustomer(data.couObjId, coustomerConditon);
-    //   // console.log(couDebtUpdate);
-    // }
-
     await detailSaleModel.updateMany(query, body);
 
     return await detailSaleModel.findById(data._id).lean();
@@ -206,7 +175,7 @@ export const detailSaleUpdateError = async (
 ) => {
   try {
     let data = await detailSaleModel.findOne(query);
-
+    // console.log(data);
     if (!data) throw new Error("no data with that id");
 
     const lastData: any = await detailSaleModel
@@ -235,33 +204,33 @@ export const detailSaleUpdateError = async (
     }
     //$debt
 
-    if (result.cashType == "Debt") {
-      let checkVocono = await getDebt({ vocono: result.vocono });
+    // if (result.cashType == "Debt") {
+    //   let checkVocono = await getDebt({ vocono: result.vocono });
 
-      if (checkVocono.length > 0)
-        throw new Error("this vocono is alreadly exist");
+    //   if (checkVocono.length > 0)
+    //     throw new Error("this vocono is alreadly exist");
 
-      let coustomerConditon = await getCoustomerById(result.couObjId);
+    //   let coustomerConditon = await getCoustomerById(result.couObjId);
 
-      if (!coustomerConditon)
-        throw new Error("There is no coustomer with that name");
+    //   if (!coustomerConditon)
+    //     throw new Error("There is no coustomer with that name");
 
-      let debtBody = {
-        stationDetailId: result.stationDetailId,
-        vocono: result.vocono,
-        couObjId: result.couObjId,
-        deposit: 0,
-        credit: result.totalPrice,
-        liter: result.saleLiter,
-      };
+    //   let debtBody = {
+    //     stationDetailId: result.stationDetailId,
+    //     vocono: result.vocono,
+    //     couObjId: result.couObjId,
+    //     deposit: 0,
+    //     credit: result.totalPrice,
+    //     liter: result.saleLiter,
+    //   };
 
-      coustomerConditon.cou_debt =
-        coustomerConditon.cou_debt + result.totalPrice;
+    //   coustomerConditon.cou_debt =
+    //     coustomerConditon.cou_debt + result.totalPrice;
 
-      await addDebt(debtBody);
+    //   await addDebt(debtBody);
 
-      await updateCoustomer(result.couObjId, coustomerConditon);
-    }
+    //   await updateCoustomer(result.couObjId, coustomerConditon);
+    // }
 
     mqttEmitter("detpos/local_server", `${result?.nozzleNo}/D1S1`);
 

@@ -80,8 +80,6 @@ export const detailSaleUpdateErrorHandler = async (
 ) => {
   try {
     let nozzleNo = req.query.nozzleNo;
-    // console.log("wk");
-    console.log(nozzleNo);
 
     let [saleLiter, totalPrice] = deviceLiveData.get(nozzleNo);
 

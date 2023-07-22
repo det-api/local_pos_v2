@@ -5,25 +5,40 @@ export interface coustomerDocument extends mongoose.Document {
   cou_name: string;
   cou_id: string;
   cou_debt: number;
+  cou_phone: number;
+  cou_address: string;
+  com_register_no: string;
+  contact_person_name: string;
+  contact_person_phone: number;
+  limitAmount: number;
 }
 
-const coustomerSchema = new Schema({
-  cou_name: { type: String, required: true, unique: true },
-  cou_id: { type: String, unique: true },
-  cou_phone: [{ type: Number, unique: true }],
+const coustomerSchema = new Schema(
+  {
+    cou_name: { type: String, required: true, unique: true },
+    cou_id: { type: String, unique: true },
+    cou_phone: { type: Number, unique: true },
 
-  cou_address: { type: String, required: true },
+    cou_sec_phone: { type: Number, unique: true },
 
-  com_register_no: { type: String, default: null },
+    cou_address: { type: String, required: true },
 
-  contact_person_name: { type: String, required: true },
+    com_register_no: { type: String, default: null },
 
-  contact_person_phone: [{ type: Number, required: true }],
+    contact_person_name: { type: String, required: true },
 
-  limitAmount: { type: Number, default: 0 },
+    contact_person_phone: { type: Number, required: true },
 
-  cou_debt: { type: Number, default: 0 },
-});
+    contact_person_sec_phone: { type: Number, required: true },
+
+    limitAmount: { type: Number, default: 0 },
+
+    cou_debt: { type: Number, default: 0 },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 coustomerSchema.pre("save", function (next) {
   this.cou_name = this.cou_name.toLowerCase();

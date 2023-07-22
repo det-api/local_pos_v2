@@ -1,6 +1,6 @@
 import { NextFunction, Response, Request } from "express";
-import { getUser } from "../service/user.service";
 import { compass } from "../utils/helper";
+import UserModel from "../model/user.model";
 
 //if you want to access multi role change this like hasAnyRole
 
@@ -10,9 +10,14 @@ export const managerValidator = async (
   next: NextFunction
 ) => {
   try {
-    let user = await getUser({ email: req.body.email });
+    let user = await UserModel.find({ email: req.body.email });
+    // console.log(req.body);
 
-    if (!user || !compass(req.body.password, user[0].password)) {
+    console.log(user);
+
+    let condition = compass(req.body.password, user[0].password);
+
+    if (!user[0] || !condition) {
       throw new Error("Creditial Error");
     }
     delete req.body.email;
