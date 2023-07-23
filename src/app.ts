@@ -30,16 +30,16 @@ client.on("connect", connect);
 client.on("message", async (topic, message) => {
   let data = topic.split("/");
 
-  console.log(data, message.toString());
+  // console.log(data, message.toString());
 
   if (data[2] == "active") {
     // console.log(data[3]);
-    // blinkLed(Number(data[3]));
+    blinkLed(Number(data[3]));
   }
 
-  // if (data[2] == "Final") {
-  //   detailSaleUpdateByDevice(data[3], message.toString());
-  // }
+  if (data[2] == "Final") {
+    detailSaleUpdateByDevice(data[3], message.toString());
+  }
 
   if (data[2] == "livedata") {
     liveDataChangeHandler(message.toString());

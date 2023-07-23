@@ -9,4 +9,8 @@ export default {
   mqttUserName: "detpos",
   mqttPassword: "asdffdsa",
   serverUrl: "http://13.251.206.31:9000",
+  detailsaleCloudUrl: "http://13.251.206.31:9000/api/detail-sale",
+  // coustomerCloudUrl: "http://13.251.206.31:9000/api/customer",
+  coustomerCloudUrl: "http://13.251.206.31:9000/api/customer/local-create",
+  debtCloudUrl: "http://13.251.206.31:9000/api/debt/local-create",
 };

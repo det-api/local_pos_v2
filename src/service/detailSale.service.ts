@@ -21,8 +21,6 @@ import { addDailyReport, getDailyReport } from "./dailyReport.service";
 import { fuelBalanceDocument } from "../model/fuelBalance.model";
 import { updateDevice } from "./device.service";
 
-const url = "http://localhost:7000/api/detail-sale";
-
 interface Data {
   nozzleNo: string;
   fuelType: string;
@@ -55,8 +53,6 @@ export const addDetailSale = async (
     const count = await detailSaleModel.countDocuments({
       dailyReportDate: currentDate,
     });
-
-    // console.log(cuurentDateForVocono);
 
     body = {
       ...body,
@@ -407,6 +403,7 @@ export const detailSaleUpdateByDevice = async (topic: string, message) => {
     console.log(ea._id);
 
     try {
+      let url = config.get<string>("detailsaleCloudUrl");
       let response = await axios.post(url, ea);
       if (response.status == 200) {
         await detailSaleModel.findByIdAndUpdate(ea._id, {

@@ -55,6 +55,20 @@ export const getUser = async (query: FilterQuery<UserDocument>) => {
   }
 };
 
+export const getCredentialUser = async (query: FilterQuery<UserDocument>) => {
+  try {
+    // console.log('wk')
+    let result = await userModel
+      .find(query)
+      .lean()
+      .populate({ path: "roles permits" })
+      .select("-__v");
+    return [result[0].email, result[0].password];
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
 export const updateUser = async (
   query: FilterQuery<UserDocument>,
   body: UpdateQuery<UserDocument>

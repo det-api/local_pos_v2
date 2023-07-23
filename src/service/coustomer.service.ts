@@ -1,6 +1,10 @@
 import { FilterQuery } from "mongoose";
 import coustomerModel, { coustomerDocument } from "../model/coustomer.model";
 import { UpdateQuery } from "mongoose";
+import axios from "axios";
+import config from "config";
+import { getCredentialUser } from "./user.service";
+import { compass } from "../utils/helper";
 
 export const getCoustomer = async (query: FilterQuery<coustomerDocument>) => {
   try {
@@ -18,11 +22,26 @@ export const getCoustomerById = async (id: string) => {
   }
 };
 
-export const addCoustomer = async (body: coustomerDocument) => {
+export const addCoustomer = async (body) => {
   try {
-    return await new coustomerModel(body).save();
+    // console.log(body.user[0].email);
+    let [email, password] = await getCredentialUser({
+      email: body.email,
+    });
+    if (!email || !compass(body.password, password)) {
+      throw new Error("Creditial Error");
+    }
+    body = {
+      ...body,
+      email,
+      password: body.password,
+    };
+    let url = config.get<string>("coustomerCloudUrl");
+    let response = await axios.post(url, body);
+
+    return await new coustomerModel(response.data.result).save();
   } catch (e) {
-    throw new Error(e);
+    throw new Error(e.response.data.msg);
   }
 };
 
