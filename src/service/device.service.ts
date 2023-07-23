@@ -4,7 +4,15 @@ import { UpdateQuery } from "mongoose";
 
 export const getDevice = async (query: FilterQuery<deviceDocument>) => {
   try {
-    return deviceModel.find(query).lean();
+    return await deviceModel.find(query).lean();
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export const getDeviceCount = async () => {
+  try {
+    return await deviceModel.countDocuments();
   } catch (e) {
     throw new Error(e);
   }
@@ -12,7 +20,7 @@ export const getDevice = async (query: FilterQuery<deviceDocument>) => {
 
 export const addDevice = async (body: deviceDocument) => {
   try {
-    return new deviceModel(body).save();
+    return await new deviceModel(body).save();
   } catch (e) {
     throw new Error(e);
   }
@@ -20,7 +28,7 @@ export const addDevice = async (body: deviceDocument) => {
 
 export const deleteDevice = async (query: FilterQuery<deviceDocument>) => {
   try {
-    return deviceModel.deleteMany(query);
+    return await deviceModel.deleteMany(query);
   } catch (e) {
     throw new Error(e);
   }

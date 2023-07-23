@@ -18,6 +18,7 @@ import { detailSaleUpdateByDevice } from "./service/detailSale.service";
 import dailyPriceRoute from "./router/dailyPrice.routes";
 import dbConnect, { client, connect } from "./utils/connect";
 import blinkLed from "./connection/ledBlink";
+import initialSetupRoute from "./router/initialSetup.routes";
 
 const app = express();
 app.use(fileUpload());
@@ -34,7 +35,7 @@ client.on("message", async (topic, message) => {
 
   if (data[2] == "active") {
     // console.log(data[3]);
-    blinkLed(Number(data[3]));
+    // blinkLed(Number(data[3]));
   }
 
   if (data[2] == "Final") {
@@ -100,6 +101,7 @@ app.use("/api/fuel-balance", fuelBalanceRoute);
 app.use("/api/fuelIn", fuelInRoute);
 
 app.use("/api/daily-price", dailyPriceRoute);
+app.use("/api/initial-setup", initialSetupRoute);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   err.status = err.status || 409;

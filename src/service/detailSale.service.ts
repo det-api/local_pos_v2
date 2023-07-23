@@ -70,14 +70,14 @@ export const addDetailSale = async (
       .findOne({ nozzleNo: body.nozzleNo })
       .sort({ _id: -1, createAt: -1 });
 
-    // if (
-    //   lastDocument?.saleLiter == 0 ||
-    //   lastDocument?.vehicleType == null ||
-    //   lastDocument?.totalPrice == 0
-    // ) {
-    //   throw new Error("you need to fill previous vol");
-    // }
-    // console.log("wk2");
+    if (
+      lastDocument?.saleLiter == 0 ||
+      lastDocument?.vehicleType == null ||
+      lastDocument?.totalPrice == 0
+    ) {
+      throw new Error("you need to fill previous vol");
+    }
+    console.log("wk2");
 
     let result = await new detailSaleModel(body).save();
 

@@ -12,7 +12,7 @@ const deviceSchema = new Schema(
     dep_no: { type: String, require: true }, //1
     nozzle_no: { type: String, required: true }, //5
     fuel_type: { type: String, required: true },
-    daily_price: { type: Number, required: true },
+    daily_price: { type: Number, default: 0 },
   },
   {
     timestamps: true,

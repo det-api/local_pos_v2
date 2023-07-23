@@ -75,6 +75,10 @@ detailSaleSchema.pre("save", function (next) {
 
   this.createAt = iso;
 
+  if (this.dailyReportDate) {
+    next();
+  }
+
   this.dailyReportDate = currentDate;
   next();
 });

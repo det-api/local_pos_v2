@@ -65,7 +65,7 @@ export const addDebtHandler = async (
       let result = await addDebt(req.body);
       // // console.log(result);
 
-      console.log(coustomerConditon);
+      // console.log(coustomerConditon);
 
       let newUpdateDebt = await getDebt({
         couObjId: coustomerConditon._id,
@@ -78,7 +78,7 @@ export const addDebtHandler = async (
 
       // console.log(data);
 
-      coustomerConditon.cou_debt = coustomerConditon.cou_debt + result.deposit;
+      coustomerConditon.cou_debt = coustomerConditon.cou_debt - result.deposit;
 
       await updateCoustomer(result.couObjId, coustomerConditon);
 

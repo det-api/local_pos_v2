@@ -24,10 +24,10 @@ export const getCoustomerById = async (id: string) => {
 
 export const addCoustomer = async (body) => {
   try {
-    // console.log(body.user[0].email);
     let [email, password] = await getCredentialUser({
       email: body.email,
     });
+    console.log('wkk1')
     if (!email || !compass(body.password, password)) {
       throw new Error("Creditial Error");
     }
@@ -36,8 +36,13 @@ export const addCoustomer = async (body) => {
       email,
       password: body.password,
     };
+    console.log('wkk2')
+
     let url = config.get<string>("coustomerCloudUrl");
+    // console.log(url)
     let response = await axios.post(url, body);
+
+    console.log(response.data);
 
     return await new coustomerModel(response.data.result).save();
   } catch (e) {

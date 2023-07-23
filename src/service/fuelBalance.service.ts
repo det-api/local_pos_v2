@@ -7,9 +7,16 @@ import config from "config";
 export const getFuelBalance = async (
   query: FilterQuery<fuelBalanceDocument>
 ) => {
-  console.log(query);
   try {
     return await fuelBalanceModel.find(query).lean().select("-__v");
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export const getFuelBalanceCount = async () => {
+  try {
+    return await fuelBalanceModel.countDocuments();
   } catch (e) {
     throw new Error(e);
   }

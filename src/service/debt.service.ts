@@ -94,7 +94,7 @@ export const detailSaleByDateAndPagi = async (
         $lt: d2,
       },
     };
-    const dataQuery = debtModel
+    const dataQuery = await debtModel
       .find(filter)
       .sort({ createdAt: -1 })
       .skip(skipCount)
