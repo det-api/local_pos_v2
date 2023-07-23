@@ -65,21 +65,23 @@ detailSaleSchema.pre("save", function (next) {
   if (this.vehicleType == "Cycle" && this.carNo != null) {
     this.carNo = "-";
   }
-  const options = { timeZone: "Asia/Yangon", hour12: false };
+  // const options = { timeZone: "Asia/Yangon", hour12: false };
 
   const currentDate = moment().tz("Asia/Yangon").format("YYYY-MM-DD");
 
-  const currentDateTime = new Date().toLocaleTimeString("en-US", options);
+  // const currentDateTime = new Date().toLocaleTimeString("en-US", options);
 
-  let iso: Date = new Date(`${currentDate}T${currentDateTime}.000Z`);
+  // let iso: Date = new Date(`${currentDate}T${currentDateTime}.000Z`);
 
-  this.createAt = iso;
+  // this.createAt = iso;
 
   if (this.dailyReportDate) {
     next();
   }
 
   this.dailyReportDate = currentDate;
+  console.log(this);
+
   next();
 });
 

@@ -26,7 +26,7 @@ export const getInitialSetupHandler = async (
 
     console.log(nzCount, tkCount);
 
-    if (result[0]?.nozzleCount == nzCount && result[0]?.tankCount == tkCount) {
+    if (result[0]?.nozzleCount <= nzCount && result[0]?.tankCount <= tkCount) {
       result = await updateInitialSetup(
         { _id: result[0]._id },
         { conditon: true }

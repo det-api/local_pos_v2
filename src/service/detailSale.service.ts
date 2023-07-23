@@ -28,6 +28,7 @@ interface Data {
   casherCode: string;
   asyncAlready: string;
   stationDetailId: string;
+  createAt: Date;
   user: UserDocument[];
 }
 
@@ -50,6 +51,14 @@ export const addDetailSale = async (
     const currentDate = moment().tz("Asia/Yangon").format("YYYY-MM-DD");
     const cuurentDateForVocono = moment().tz("Asia/Yangon").format("DDMMYYYY");
 
+    const options = { timeZone: "Asia/Yangon", hour12: false };
+
+    const currentDateTime = new Date().toLocaleTimeString("en-US", options);
+
+    let iso: Date = new Date(`${currentDate}T${currentDateTime}.000Z`);
+
+    console.log(iso);
+
     const count = await detailSaleModel.countDocuments({
       dailyReportDate: currentDate,
     });
@@ -62,6 +71,7 @@ export const addDetailSale = async (
       stationDetailId: body.user[0].stationId,
       casherCode: body.user[0].name,
       asyncAlready: "0",
+      createAt: iso,
     };
 
     console.log("wk1");
