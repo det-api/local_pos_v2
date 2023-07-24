@@ -60,6 +60,8 @@ export const addDetailSaleHandler = async (
   }
 };
 
+//12s2290LPT1901042.875
+
 export const updateDetailSaleHandler = async (
   req: Request,
   res: Response,

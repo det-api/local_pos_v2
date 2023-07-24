@@ -33,7 +33,13 @@ export const getInitialSetupHandler = async (
       );
     }
 
-    fMsg(res, "InitialSetup are here", result);
+    fMsg(
+      res,
+      "InitialSetup are here",
+      result.length == 0
+        ? { condition: false }
+        : { condition: result[0].condition }
+    );
   } catch (e) {
     next(new Error(e));
   }

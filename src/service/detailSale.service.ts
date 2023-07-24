@@ -85,7 +85,7 @@ export const addDetailSale = async (
       lastDocument?.vehicleType == null ||
       lastDocument?.totalPrice == 0
     ) {
-      throw new Error("you need to fill previous vol");
+      throw new Error(`you need to fill previous ${lastDocument?.vocono}`);
     }
     console.log("wk2");
 
@@ -248,7 +248,10 @@ export const detailSaleUpdateError = async (
 
 export const detailSaleUpdateByDevice = async (topic: string, message) => {
   const regex = /[A-Z]/g;
-  let data: number[] = message.split(regex);
+  let data: any[] = message.split(regex);
+  console.log(data[2]);
+  console.log(typeof data[2]);
+  // if () console.log("wk2222222222222");
 
   // let [saleLiter, totalPrice] = deviceLiveData.get(data[0]);
   let saleLiter = deviceLiveData.get(data[0])?.[0] ?? null;
@@ -269,16 +272,13 @@ export const detailSaleUpdateByDevice = async (topic: string, message) => {
     return;
   }
 
-  if (saleLiter == 0 || (saleLiter == null && data[2] == 0)) {
+  if (saleLiter == 0 || (saleLiter == null && data[2] == 0) || data[2] == "") {
     await detailSaleModel.findByIdAndDelete(lastData[0]?._id);
-    mqttEmitter(
-      "detpos/local_server/message",
-      `${lastData[0].nozzleNo} was deleted`
-    );
+    mqttEmitter("detpos/local_server", `${lastData[0]?.nozzleNo}/D1S1`);
     return;
   }
 
-  // console.log(lastData[0].salePrice, data[1]);
+  console.log(lastData[0].salePrice, data[1]);
 
   if (lastData[0].salePrice != data[1]) {
     await updateDevice(
