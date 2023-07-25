@@ -67,7 +67,7 @@ export const addDailyPriceHandler = async (
           "detpos/local_server/price",
           `${ea.nozzle_no}${ea.daily_price}`
         );
-      }, 200 * (index + 1));
+      }, 500 * (index + 1));
     });
 
     fMsg(res, "New dailyPrice data was added", result);
