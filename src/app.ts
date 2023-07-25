@@ -31,7 +31,11 @@ client.on("connect", connect);
 client.on("message", async (topic, message) => {
   let data = topic.split("/");
 
-  // console.log(data, message.toString());
+  // console.log();
+
+  if (topic == "detpos/local_server/4") {
+    console.log(data, message.toString());
+  }
 
   if (data[2] == "active") {
     // console.log(data[3]);
