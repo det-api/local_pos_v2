@@ -19,11 +19,7 @@ debtRoute.get(
   getDebtDatePagiHandler
 );
 
-debtRoute.post(
-  "/",
-  // validateToken, hasAnyPermit(["add"]),
-  addDebtHandler
-);
+debtRoute.post("/", validateToken, hasAnyPermit(["add"]), addDebtHandler);
 
 debtRoute.patch("/", validateToken, hasAnyPermit(["edit"]), updateDebtHandler);
 

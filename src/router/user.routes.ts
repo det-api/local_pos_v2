@@ -37,18 +37,14 @@ userRoute.patch(
 );
 
 //getuser
-userRoute.get(
-  "/",
-  // validateToken,
-  getUserHandler
-);
+userRoute.get("/", validateToken, getUserHandler);
 
 //delete each user
 userRoute.delete(
   "/",
-  // validateToken,
-  // roleValidator(["admin"]),
-  // hasAnyPermit(["delete"]),
+  validateToken,
+  roleValidator(["admin"]),
+  hasAnyPermit(["delete"]),
   deleteUserHandler
 );
 
@@ -60,37 +56,37 @@ userRoute.get("/admin", getUserByAdminHandler);
 //adding role in user
 userRoute.patch(
   "/add/role",
-  // validateToken,
-  // validateAll(userRoleSchema),
-  // roleValidator(["admin"]),
-  // hasAnyPermit(["add"]),
+  validateToken,
+  validateAll(userRoleSchema),
+  roleValidator(["admin"]),
+  hasAnyPermit(["add"]),
   userAddRoleHandler
 );
 
 userRoute.patch(
   "/remove/role",
   validateToken,
-  // validateAll(userRoleSchema),
-  // roleValidator(["admin"]),
-  // hasAnyPermit(["delete"]),
+  validateAll(userRoleSchema),
+  roleValidator(["admin"]),
+  hasAnyPermit(["delete"]),
   userRemoveRoleHandler
 );
 
 //adding permit in user
 userRoute.patch(
   "/add/permit",
-  // validateToken,
-  // validateAll(userPermitSchema),
-  // roleValidator(["admin"]),
-  // hasAnyPermit(["add"]),
+  validateToken,
+  validateAll(userPermitSchema),
+  roleValidator(["admin"]),
+  hasAnyPermit(["add"]),
   userAddPermitHandler
 );
 userRoute.patch(
   "/remove/permit",
-  // validateToken,
-  // validateAll(userPermitSchema),
-  // roleValidator(["admin"]),
-  // hasAnyPermit(["delete"]),
+  validateToken,
+  validateAll(userPermitSchema),
+  roleValidator(["admin"]),
+  hasAnyPermit(["delete"]),
   userRemovePermitHandler
 );
 

@@ -20,15 +20,15 @@ fuelInRoute.get(
 
 fuelInRoute.get(
   "/pagi/by-date/:page",
-  // validateToken,
-  // hasAnyPermit(["view"]),
+  validateToken,
+  hasAnyPermit(["view"]),
   getFuelInByDateHandler
 );
 
 fuelInRoute.post(
   "/",
   validateToken,
-  // roleValidator(["admin"]), //In that one role is manager
+  roleValidator(["admin"]), //In that one role is manager
   hasAnyPermit(["add"]),
   validateAll(fuelInSchema),
   addFuelInHandler
@@ -36,7 +36,7 @@ fuelInRoute.post(
 fuelInRoute.patch(
   "/",
   validateToken,
-  // roleValidator(["admin"]),
+  roleValidator(["admin"]),
   hasAnyPermit(["edit"]),
   validateAll(allSchemaId),
   updateFuelInHandler
@@ -44,7 +44,7 @@ fuelInRoute.patch(
 fuelInRoute.delete(
   "/",
   validateToken,
-  // roleValidator(["admin"]),
+  roleValidator(["admin"]),
   hasAnyPermit(["delete"]),
   validateAll(allSchemaId),
   deleteFuelInHandler

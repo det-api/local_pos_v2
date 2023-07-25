@@ -11,8 +11,8 @@ const initialSetupRoute = require("express").Router();
 
 initialSetupRoute.get(
   "/",
-  // validateToken,
-  // roleValidator(["admin"]),
+  validateToken,
+  roleValidator(["admin"]),
   getInitialSetupHandler
 );
 initialSetupRoute.post(

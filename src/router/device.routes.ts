@@ -9,16 +9,6 @@ import { validateToken } from "../middleware/validator";
 const deviceRoute = require("express").Router();
 
 deviceRoute.get("/", getDeviceHandler);
-deviceRoute.post(
-  "/",
-  //  validateToken, hasAnyPermit(["add"]),
-  addDeviceHandler
-);
-// deviceRoute.delete(
-//   "/",
-//   validateToken,
-//   hasAnyPermit(["delete"]),
-//   deletDeviceHandler
-// );
+deviceRoute.post("/", validateToken, hasAnyPermit(["add"]), addDeviceHandler);
 
 export default deviceRoute;

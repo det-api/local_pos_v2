@@ -11,12 +11,7 @@ import { allSchemaId, rolePermitSchema, roleSchema } from "../schema/schema";
 
 const roleRoute = require("express").Router();
 
-roleRoute.get(
-  "/",
-  //  validateToken,
-  // roleValidator(["admin"]),
-  getRoleHandler
-);
+roleRoute.get("/", validateToken, roleValidator(["admin"]), getRoleHandler);
 
 roleRoute.post(
   "/",
@@ -28,9 +23,9 @@ roleRoute.post(
 
 roleRoute.delete(
   "/",
-  // validateToken,
-  // validateAll(allSchemaId),
-  // roleValidator(["admin"]),
+  validateToken,
+  validateAll(allSchemaId),
+  roleValidator(["admin"]),
   deletRoleHandler
 );
 
@@ -44,9 +39,9 @@ roleRoute.patch(
 
 roleRoute.patch(
   "/remove/permit",
-  // validateToken,
-  // validateAll(rolePermitSchema),
-  // roleValidator(["admin"]),
+  validateToken,
+  validateAll(rolePermitSchema),
+  roleValidator(["admin"]),
   roleRemovePermitHandler
 );
 
